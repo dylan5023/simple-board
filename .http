@@ -1,0 +1,24 @@
+GET http://localhost:3000/board
+
+################################
+
+GET http://localhost:3000/board/11
+
+
+
+################################
+POST http://localhost:3000/board
+content-type: application/json
+
+{
+    "name":"Dylan Kang",
+    "contents": "contents 11"
+}
+
+###
+PUT http://localhost:3000/board/11
+content-type: application/json
+
+{
+    "name":"Alice Lee"
+}
