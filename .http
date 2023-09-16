@@ -22,3 +22,6 @@ content-type: application/json
 {
     "name":"Alice Lee"
 }
+
+###
+GET http://localhost:3000

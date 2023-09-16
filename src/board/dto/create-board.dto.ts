@@ -18,5 +18,5 @@ export class CreateBoardDto {
     required: true,
     example: 'hi',
   })
-  contents: string;
+  content: string;
 }
