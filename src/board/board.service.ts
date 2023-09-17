@@ -8,52 +8,52 @@ export class BoardService {
     {
       id: 1,
       name: 'hello world',
-      content: 'Content 1',
+      contents: 'contents 1',
     },
     {
       id: 2,
       name: 'hello world2',
-      content: 'Content 2',
+      contents: 'contents 2',
     },
     {
       id: 3,
       name: 'hello world3',
-      content: 'Content 3',
+      contents: 'contents 3',
     },
     {
       id: 4,
       name: 'hello world4',
-      content: 'Content 4',
+      contents: 'contents 4',
     },
     {
       id: 5,
       name: 'hello world5',
-      content: 'Content 5',
+      contents: 'contents 5',
     },
     {
       id: 6,
       name: 'hello world6',
-      content: 'Content 6',
+      contents: 'contents 6',
     },
     {
       id: 7,
       name: 'hello world7',
-      content: 'Content 7',
+      contents: 'contents 7',
     },
     {
       id: 8,
       name: 'hello world8',
-      content: 'Content 8',
+      contents: 'contents 8',
     },
     {
       id: 9,
       name: 'hello world9',
-      content: 'Content 9',
+      contents: 'contents 9',
     },
     {
       id: 10,
       name: 'hello world10',
-      content: 'Content 10',
+      contents: 'contents 10',
     },
   ];
   findAll() {
