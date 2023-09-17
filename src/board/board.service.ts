@@ -1,103 +1,69 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entity/user.entity';
+import { Board } from 'src/entity/board.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BoardService {
-  private boards = [
-    {
-      id: 1,
-      name: 'hello world',
-      contents: 'contents 1',
-    },
-    {
-      id: 2,
-      name: 'hello world2',
-      contents: 'contents 2',
-    },
-    {
-      id: 3,
-      name: 'hello world3',
-      contents: 'contents 3',
-    },
-    {
-      id: 4,
-      name: 'hello world4',
-      contents: 'contents 4',
-    },
-    {
-      id: 5,
-      name: 'hello world5',
-      contents: 'contents 5',
-    },
-    {
-      id: 6,
-      name: 'hello world6',
-      contents: 'contents 6',
-    },
-    {
-      id: 7,
-      name: 'hello world7',
-      contents: 'contents 7',
-    },
-    {
-      id: 8,
-      name: 'hello world8',
-      contents: 'contents 8',
-    },
-    {
-      id: 9,
-      name: 'hello world9',
-      contents: 'contents 9',
-    },
-    {
-      id: 10,
-      name: 'hello world10',
-      contents: 'contents 10',
-    },
-  ];
-  findAll() {
-    return this.boards;
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(Board)
+    private boardRepository: Repository<Board>,
+  ) {}
+
+  async findAll() {
+    return this.boardRepository.find();
   }
 
-  find(id: number) {
-    const index = this.getBoardId(id);
-    return this.boards[index];
-  }
-
-  create(data: CreateBoardDto) {
-    const newBoard = { id: this.getNextId(), ...data };
-    this.boards.push(newBoard);
-    return newBoard;
-  }
-
-  update(id: number, data: UpdateBoardDto) {
-    const index = this.getBoardId(id);
-
-    if (index > -1) {
-      this.boards[index] = {
-        ...this.boards[index],
-        ...data,
-      };
-      return this.boards[index];
+  async find(id: number) {
+    const board = await this.boardRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        user: true,
+      },
+    });
+    if (!board) {
+      throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
     }
-    return null;
+    return board;
   }
 
-  delete(id: number) {
-    const index = this.getBoardId(id);
-    if (index > -1) {
-      const deleteBoard = this.boards[index];
-      this.boards.splice(index, 1);
-      return deleteBoard;
+  async create(data: CreateBoardDto) {
+    // create function is only available to make instance
+    const board = this.boardRepository.create(data);
+    await this.boardRepository.save(board);
+  }
+
+  async update(id: number, data: UpdateBoardDto) {
+    const board = await await this.getBoardById(id);
+
+    if (!board) {
+      throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
     }
-    return null;
+    return this.boardRepository.update(id, {
+      ...data,
+    });
   }
 
-  getBoardId(id: number) {
-    return this.boards.findIndex((board) => board.id === id);
+  async delete(id: number) {
+    const board = await this.getBoardById(id);
+    if (!board) {
+      throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
+    }
+
+    // put it entity
+    return this.boardRepository.remove(board);
   }
-  getNextId() {
-    return this.boards.sort((a, b) => b.id - a.id)[0].id + 1;
+
+  async getBoardById(id: number) {
+    return this.boardRepository.findOneBy({
+      id,
+    });
   }
 }

@@ -17,6 +17,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
+      // check database query
+      logging: true,
     }),
     BoardModule,
   ],
