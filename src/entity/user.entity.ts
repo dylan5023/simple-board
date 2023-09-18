@@ -23,4 +23,7 @@ export class User {
   @ApiProperty({ description: 'posting board' })
   @OneToMany(() => Board, (board) => board.user)
   boards?: Board[];
+
+  @Column({ select: false, nullable: true, insert: false, update: false })
+  boardCount?: number;
 }
