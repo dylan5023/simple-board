@@ -14,8 +14,6 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class BoardService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
     @InjectRepository(Board)
     private boardRepository: Repository<Board>,
   ) {}
